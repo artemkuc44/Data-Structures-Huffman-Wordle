@@ -117,7 +117,22 @@ public class Wk1 {
         double[][] mat1 = new double [m][n];
         double[][] mat2 = new double [m][n];
 
-        // initialise the matrices at random
+        // Initialize the matrices randomly
+        Random rnd = new Random();
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                mat1[i][j] = rnd.nextInt(10);
+                mat2[i][j] = rnd.nextInt(10);
+
+//                mat1[i][j] = 2;
+//                mat2[i][j] = 3;
+            }
+        }
+        System.out.println("\n mat1 \n");
+
+        printMatrix(mat1);
+        System.out.println("\n mat2 \n");
+        printMatrix(mat2);
 
         double[][] prod = matProd (mat1 , mat2);
 
@@ -125,8 +140,17 @@ public class Wk1 {
     }
 
     private static double[][] matProd(double[][] mat1, double[][] mat2) {
+        double[][] prod = new double[mat1.length][mat2[0].length];
 
-        return null;
+        for(int i = 0;i<mat1.length;i++){
+            for(int j = 0;j< mat2[0].length;j++){
+                for(int n = 0;n<mat1[0].length;n++){
+                    prod[i][j] += mat1[i][n]*mat2[n][j];
+                }
+            }
+        }
+
+        return prod;
     }
 
 
@@ -138,6 +162,8 @@ public class Wk1 {
         q3();
 
         q4();
+
+        q5();
     }
 
 }
