@@ -154,6 +154,70 @@ public class Wk1 {
     }
 
 
+    public static void q6(){
+        Random random = new Random();
+        int n = 30;
+        Integer[] arr = random.ints(n, 0, 100).boxed().toArray(Integer[]::new);
+
+        System.out.println(Arrays.deepToString(arr));
+        int sumEven = Arrays.stream(arr)
+                .filter(num -> num % 2 == 0)
+                .mapToInt(Integer::intValue)
+                .sum();
+        int sumOdd = Arrays.stream(arr)
+                .filter(num -> num %2!=0)
+                .mapToInt(Integer::intValue)
+                .sum();
+
+
+        System.out.println("Even sum =" + sumEven);
+        System.out.println("Odd sum =" + sumOdd);
+
+    }
+
+    public static void q7(){
+        Random random = new Random();
+        int n = 50;
+        Integer[] arr = random.ints(n, 0, 100).boxed().toArray(Integer[]::new);
+
+
+        Integer[] arr_distinct = Arrays.stream(arr).distinct().toArray(Integer[]::new);
+
+        System.out.println(Arrays.deepToString(arr_distinct));
+
+    }
+    public static int[][] getTriples(int[] arr,int x){
+        ArrayList<int[]> list = new ArrayList<>();
+        for(int i = 0;i<arr.length;i++){
+            for(int j = i+1;j< arr.length;j++){
+                for(int k = j+1;k<arr.length;k++){
+                    if(arr[i] + arr[j] + arr[k] == x){
+                        list.add(new int[]{arr[i], arr[j] ,arr[k]});
+                    }
+                }
+            }
+        }
+
+        return list.toArray(new int[0][0]);
+    }
+
+    public static void q8(){
+        int[] arr = {-1, 12, 4, 7, 3, 2, 1, 2, 0, 1, 5};
+        int x = 5;
+        int[] uniqueArr = Arrays.stream(arr).distinct().toArray();
+
+
+        int[][] ans = getTriples(arr, x); // your code
+
+        System.out.println(Arrays.deepToString(ans));
+
+        //can i use the 2 "2s" in the array seperately?
+        //distinct:
+
+        System.out.println(Arrays.deepToString(getTriples(uniqueArr,x)));
+    }
+
+
     public static void main(String [] args) {
         q1();
 
@@ -164,6 +228,12 @@ public class Wk1 {
         q4();
 
         q5();
+
+        q6();
+
+        q7();
+
+        q8();
 
     }
 
