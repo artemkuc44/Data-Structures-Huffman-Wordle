@@ -1,7 +1,8 @@
 package project20280.interfaces;
 
 /**
- * An interface for a binary tree, in which each node has at most two children.
+ * An interface for a binary tree, in wh
+ * ich each node has at most two children.
  */
 public interface BinaryTree<E> extends Tree<E> {
 

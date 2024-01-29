@@ -2,7 +2,9 @@ package project20280.exercises;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Random;
+import java.util.stream.Stream;
 
 public class Wk1 {
 
@@ -212,10 +214,51 @@ public class Wk1 {
         System.out.println(Arrays.deepToString(ans));
 
         //can i use the 2 "2s" in the array seperately?
-        //distinct:
+        //genuinely distinct:
 
         System.out.println(Arrays.deepToString(getTriples(uniqueArr,x)));
     }
+
+    public static void q10(){//kadanes algorithm
+        int[] A = {1, 2, -3, -4, 0, 6, 7, 8, 9};
+        int meh = 0;
+        int msf = 0;
+
+        for(int i = 0;i<A.length;i++){
+            meh += A[i];
+            if(meh<A[i]){
+                meh = A[i];
+            }
+            if(msf<meh || i == 0){
+                msf = meh;
+            }
+
+        }
+        System.out.println("The largest sum of contiguous sub-array: "+msf);
+
+    }
+
+//    public static void q11(){
+//        int [] A = { 4, 5, 9, 5, 6, 10, 11, 9, 6, 4, 5 };
+//
+//
+//        int up = 0;
+//        int down = 0;
+//
+//
+//        for(int i = 0;i<A.length;i++){
+//
+//        }
+//
+//        System.out.println("The longest bitonic subarray is of length 7 at" +
+//                " positions A[3-9] and the elements of this sub-array are:");
+//
+//
+//
+//    }
+
+
+
 
 
     public static void main(String [] args) {
@@ -233,9 +276,57 @@ public class Wk1 {
 
         q7();
 
-
         q8();
+
+        q10();
 
     }
 
 }
+
+//public class MyArray <T> implements Iterable <T> {
+//
+//    private T[] x;
+//
+//    MyArray(T[] input) {
+//
+//        x = (T[]) new Object[input.length];
+//        // copy input into x
+//        System.arraycopy(input, 0, x, 0, input.length);
+//
+//    }
+//
+//    public Iterator<T> iterator() {
+//        return new MyIterator();
+//    }
+//
+//    class MyIterator implements Iterator<T> {
+//
+//        private int currentIndex = 0;
+//        public boolean hasNext() {
+//            // implement
+//            return currentIndex <x.length;
+//        }
+//
+//        public T next() {
+//            // implement
+//            if(!hasNext()){
+//                throw new IllegalArgumentException("no next");
+//            }else{
+//                return  x[currentIndex ++];
+//            }
+//        }
+//
+//        // remove
+//    }
+//
+//    public static void main(String[] args) {
+//        Random random = new Random();
+//        Stream<Integer> arr = random.ints(10, 25, 50).boxed();
+//        MyArray<Integer> myArray = new MyArray<>(arr);
+//
+//        for (Integer i : myArray) {
+//            System.out.println(i);
+//        }
+//    }
+//}
