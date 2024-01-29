@@ -238,24 +238,46 @@ public class Wk1 {
 
     }
 
-//    public static void q11(){
-//        int [] A = { 4, 5, 9, 5, 6, 10, 11, 9, 6, 4, 5 };
-//
-//
-//        int up = 0;
-//        int down = 0;
-//
-//
-//        for(int i = 0;i<A.length;i++){
-//
-//        }
-//
-//        System.out.println("The longest bitonic subarray is of length 7 at" +
-//                " positions A[3-9] and the elements of this sub-array are:");
-//
-//
-//
-//    }
+
+    public static void q11(){
+        int [] A = { 4, 5, 9, 5, 6, 10,11, 9, 6, 4, 5 };
+
+        int[] inc = new int[A.length];
+        int[] dec = new int[A.length];
+
+        //initialize first and last elements
+        inc[0] = 1;
+        dec[A.length -1] = 1;
+
+        //fill inc and dec
+        for(int i = 1;i<A.length;i++){
+            inc[i] = (A[i] > A[i-1]) ? inc[i-1] + 1 : 1;
+            dec[A.length-1-i] = (A[A.length-i-1] > A[A.length-i]) ? dec[A.length-i] + 1 : 1;
+        }
+
+        //find start and length
+
+        int maxLen = 0;
+        int start = 0;
+
+        for(int i  =0;i<A.length;i++){
+            if(inc[i] + dec[i] -1> maxLen){ //-1 to account for middle num
+                maxLen = inc[i] + dec[i] -1;
+                start = i - inc[i] +1;
+            }
+        }
+
+        // Print
+        System.out.println("The longest bitonic subarray is of length " + maxLen +
+                " at positions A[" + start + "-" + (start + maxLen - 1) + "] and the elements " +
+                "of this sub-array are:");
+        for (int i = start; i < start + maxLen; i++) {
+            System.out.print(A[i] + " ");
+        }
+        System.out.println();
+
+
+    }
 
 
 
@@ -279,6 +301,8 @@ public class Wk1 {
         q8();
 
         q10();
+
+        q11();
 
     }
 
