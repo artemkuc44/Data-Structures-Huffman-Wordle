@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class Wk1 {
@@ -271,10 +272,32 @@ public class Wk1 {
         System.out.println("The longest bitonic subarray is of length " + maxLen +
                 " at positions A[" + start + "-" + (start + maxLen - 1) + "] and the elements " +
                 "of this sub-array are:");
+        System.out.print("[");
         for (int i = start; i < start + maxLen; i++) {
-            System.out.print(A[i] + " ");
+            if(i == start+maxLen-1){
+                System.out.print(A[i]);
+            }else{
+                System.out.print(A[i] + ", ");
+
+            }
         }
-        System.out.println();
+        System.out.println("]");
+
+
+    }
+
+    public static void q12(){
+        int[] nums = {1, 2, 3, 4, 5, 6};
+        Random rand = new Random();
+
+        int[] shuffledArray = IntStream.range(0, nums.length)
+                .boxed()
+                .sorted((i, j) -> rand.nextInt(2) - 1)
+                .mapToInt(i -> nums[i])
+                .toArray();
+
+        System.out.println(Arrays.toString(shuffledArray));
+
 
 
     }
@@ -303,6 +326,8 @@ public class Wk1 {
         q10();
 
         q11();
+
+        q12();
 
     }
 
