@@ -19,13 +19,14 @@ public class Wk2 {
 
         int[] l1 = {2, 6, 20, 24};
         int[] l2 = {1, 3, 5, 8, 12, 19, 25};
-        int min = 0;
+        int[] mergedList = new int[l1.length + l2.length];
+        int min = Integer.MAX_VALUE;
 
 
 
         for(int i = 0;i<l1.length + l2.length;i++){
             for(int j = 0;j<l1.length + l2.length;j++){
-
+                //if(l1.[i])
             }
         }
 
