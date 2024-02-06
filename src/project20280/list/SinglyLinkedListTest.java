@@ -120,4 +120,85 @@ class SinglyLinkedListTest {
         assertEquals("[1, 2, 3]", ll.toString());
     }
 
+    @Test
+    void testReverseEmptyList() {
+        //note: SinglyLinkedList as reverse not part of the List interface
+        SinglyLinkedList<Integer> ll = new SinglyLinkedList<Integer>();
+        ll.reverse();
+        assertTrue(ll.isEmpty(), "Empty list should remain empty after reverse");
+    }
+
+    @Test
+    void testReverseSingleElementList() {
+        SinglyLinkedList<Integer> ll = new SinglyLinkedList<Integer>();
+        ll.addLast(1);
+        ll.reverse();
+        assertEquals("[1]", ll.toString(), "Single element list should remain unchanged after reverse");
+    }
+
+    @Test
+    void testReverseMultipleElementsList() {
+        SinglyLinkedList<Integer> ll = new SinglyLinkedList<Integer>();
+        ll.addLast(1);
+        ll.addLast(2);
+        ll.addLast(3);
+        ll.reverse();
+        assertEquals("[3, 2, 1]", ll.toString(), "List elements should be reversed");
+    }
+
+    @Test
+    void testReverseMoreElementsList() {
+        SinglyLinkedList<Integer> ll = new SinglyLinkedList<Integer>();
+        ll.addLast(1);
+        ll.addLast(2);
+        ll.addLast(3);
+        ll.addLast(4);
+        ll.addLast(5);
+        ll.reverse();
+        assertEquals("[5, 4, 3, 2, 1]", ll.toString(), "List elements should be reversed with more elements");
+    }
+
+    ///////////////////////////////////////////////////////
+    @Test
+    void testCopyEmptyList() {
+        SinglyLinkedList<Integer> originalList = new SinglyLinkedList<>();
+        SinglyLinkedList<Integer> copiedList = originalList.copy();
+
+        assertNotNull(copiedList, "Copied list should not be null.");
+        assertTrue(copiedList.isEmpty(), "Copied list should be empty.");
+        assertNotSame(originalList, copiedList, "Copied list should be a different instance.");
+    }
+
+    @Test
+    void testCopyNonEmptyList() {
+        SinglyLinkedList<Integer> originalList = new SinglyLinkedList<>();
+        originalList.addLast(1);
+        originalList.addLast(2);
+        originalList.addLast(3);
+
+        SinglyLinkedList<Integer> copiedList = originalList.copy();
+
+        assertNotNull(copiedList, "Copied list should not be null.");
+        assertFalse(copiedList.isEmpty(), "Copied list should not be empty.");
+        assertEquals(originalList.size(), copiedList.size(), "Copied list should have the same size as the original.");
+        assertEquals("[1, 2, 3]", copiedList.toString(), "Copied list elements should match the original list.");
+        assertNotSame(originalList, copiedList, "Copied list should be a different instance.");
+
+        // Verify that the elements are the same but not the same instances (deep copy)
+        for (int i = 0; i < originalList.size(); i++) {
+            assertEquals(originalList.get(i), copiedList.get(i), "Elements at index " + i + " should be equal.");
+        }
+    }
+
+    @Test
+    void testCopyPreservesOrder() {
+        SinglyLinkedList<Integer> originalList = new SinglyLinkedList<>();
+        originalList.addLast(3);
+        originalList.addLast(2);
+        originalList.addLast(1);
+
+        SinglyLinkedList<Integer> copiedList = originalList.copy();
+        assertEquals("[3, 2, 1]", copiedList.toString(), "Copied list should preserve the order of elements.");
+    }
+
 }

@@ -72,7 +72,10 @@ public class SinglyLinkedList<E> implements List<E> {
     private int size = 0;                      // number of nodes in the list
 
     public SinglyLinkedList() {
-    }              // constructs an initially empty list
+        head = null;
+    }
+
+
 
     //@Override
     public int size() {
@@ -266,6 +269,31 @@ public class SinglyLinkedList<E> implements List<E> {
         sb.append("]");
         return sb.toString();
     }
+
+    public void reverse() {
+        Node<E> prev = null;
+        Node<E> curr = head;
+        Node<E> next;
+        while(curr != null) {
+            next = curr.getNext();
+            curr.setNext(prev);
+            prev = curr;
+            curr = next;
+        }
+        head = prev;
+    }
+
+    public SinglyLinkedList<E> copy() {
+        SinglyLinkedList<E> twin = new SinglyLinkedList<E>();
+        Node<E> tmp = head;
+        while (tmp != null) {
+            twin.addLast(tmp.getElement());
+            tmp = tmp.next;
+        }
+        return twin;
+    }
+
+
 
     public static void main(String[] args) {
         SinglyLinkedList<Integer> ll = new SinglyLinkedList<Integer>();

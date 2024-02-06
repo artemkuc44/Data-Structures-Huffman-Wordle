@@ -1,8 +1,10 @@
 package project20280.exercises;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
 
 public class Wk2 {
     //6)What is the difference between a singly linked list and a circularly linked list?
@@ -16,24 +18,33 @@ public class Wk2 {
     //A) multiplayer game where players take turns, music playlist where last song loops back to first
 
     public static void q9(){
-
-        int[] l1 = {2, 6, 20, 24};
+        int[] l1 = {2, 6, 20, 24,28,29};
         int[] l2 = {1, 3, 5, 8, 12, 19, 25};
-        int[] mergedList = new int[l1.length + l2.length];
-        int min = Integer.MAX_VALUE;
+        int[] mergedArray = new int[l1.length + l2.length];
+        int i = 0,j = 0,k = 0;
 
+        while(i < l1.length && j < l2.length){
 
-
-        for(int i = 0;i<l1.length + l2.length;i++){
-            for(int j = 0;j<l1.length + l2.length;j++){
-                //if(l1.[i])
+            if(i < l1.length && l1[i] < l2[j]){
+                mergedArray[k++] = l1[i++];
+            }
+            else if(l2[j] < l1[i]){
+                mergedArray[k++] = l2[j++];
             }
         }
 
+        while(i < l1.length){
+            mergedArray[k++] = l1[i++];
+        }
+        while(j < l2.length){
+            mergedArray[k++] = l2[j++];
+        }
+
+        System.out.println(Arrays.toString(mergedArray));
+
     }
 
-
     public static void main(String[] args){
-        q9();
+       q9();
     }
 }
