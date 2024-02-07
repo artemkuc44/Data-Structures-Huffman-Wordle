@@ -66,10 +66,22 @@ public class ArrayStack<E> implements Stack<E> {
     @Override
     public void push(E e) throws IllegalArgumentException{
         // TODO
-        if(size() == data.length) throw new IllegalArgumentException("Stack is full");
-        else{
-            data[++t] = e;
+        if(size() == data.length){
+            resize(data.length + 1);
+            System.out.println("resized");
         }
+
+        data[++t] = e;
+
+    }
+    // Utility method to resize the array
+    private void resize(int capacity) {
+        @SuppressWarnings({"unchecked"})
+        E[] temp = (E[]) new Object[capacity];
+        for (int i = 0; i <= t; i++) {
+            temp[i] = data[i];
+        }
+        data = temp;
     }
 
     /**

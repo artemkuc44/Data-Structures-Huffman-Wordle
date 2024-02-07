@@ -66,4 +66,26 @@ public class ArrayStackTest {
             s.push(i);
         assertEquals("[9, 8, 7, 6, 5, 4, 3, 2, 1, 0]", s.toString());
     }
+
+    ////////extra
+
+    @Test
+    public void testPushOntoFullStackIncreasesSize() {
+        // Initial capacity is set to 3 for this example.
+        ArrayStack<Integer> stack = new ArrayStack<>(3);
+
+        // Fill the stack to its initial capacity.
+        stack.push(1);
+        stack.push(2);
+        stack.push(3);
+
+        // This operation should trigger resizing of the stack to accommodate more elements.
+        stack.push(4);
+
+        // Verify the stack now contains 4 elements, indicating it has resized.
+        assertEquals( 4, stack.size());
+
+        // Optionally, verify that the elements are correctly positioned in the stack.
+        assertEquals(Integer.valueOf(4), stack.top());
+    }
 }
