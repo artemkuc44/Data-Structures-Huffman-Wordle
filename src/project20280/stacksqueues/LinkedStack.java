@@ -10,10 +10,10 @@ public class LinkedStack<E> implements Stack<E> {
     public static void main(String[] args) {
     }
 
-    public LinkedStack() {//linked stack relis on initially empty list
-        // TODO
-
-    }
+//    public LinkedStack() {//linked stack relis on initially empty list
+//        // TODO
+//
+//    }
 
     @Override
     public int size() {

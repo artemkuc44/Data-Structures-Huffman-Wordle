@@ -5,14 +5,14 @@ import project20280.list.DoublyLinkedList;
 
 public class LinkedQueue<E> implements Queue<E> {
 
-    private DoublyLinkedList<E> ll;
+    private DoublyLinkedList<E> ll = new DoublyLinkedList<>();
 
     public static void main(String[] args) {
     }
 
-    public LinkedQueue() {
-        // TODO
-    }
+//    public LinkedQueue() {//keep it empty
+//        // TODO
+//    }
 
     @Override
     public int size() {
@@ -27,18 +27,21 @@ public class LinkedQueue<E> implements Queue<E> {
     @Override
     public void enqueue(E e) {
         // TODO
+        ll.addLast(e);
     }
 
     @Override
     public E first() {
         // TODO
-        return null;
+        return ll.first();
     }
 
     @Override
     public E dequeue() {
         // TODO
-        return null;
+        E ans = ll.first();
+        ll.removeFirst();
+        return ans;
     }
 
     public String toString() {
