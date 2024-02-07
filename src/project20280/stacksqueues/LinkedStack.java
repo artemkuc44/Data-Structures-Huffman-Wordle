@@ -41,6 +41,7 @@ public class LinkedStack<E> implements Stack<E> {
     @Override
     public E pop() {
         // TODO
+
         E ans = ll.first();
         ll.removeFirst();
         return ans;
