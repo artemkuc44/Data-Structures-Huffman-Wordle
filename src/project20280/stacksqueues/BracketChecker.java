@@ -58,6 +58,11 @@ class BracketChecker {
                 "a{b(c]d}e", // not correct; ] doesn't match (\n" +
                 "a[b{c}d]e}", // not correct; nothing matches final }\n" +
                 "a{b(c) ", // // not correct; Nothing matches opening {
+                "{[()]}",//correct
+                "{[(])}",//incorrect
+                "{{[[(())]]}}",//correct
+                "][]][][[]][]][][[[",//incorrect
+                "(((abc))((d)))))"//incorrect
         };
 
         for (String input : inputs) {
