@@ -283,6 +283,22 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
      */
     public void attach(Position<E> p, LinkedBinaryTree<E> t1, LinkedBinaryTree<E> t2) throws IllegalArgumentException {
         // TODO
+        Node<E> node = validate(p);
+        if(isInternal(p) )throw new IllegalArgumentException("P must be external");
+        size = t1.size() + t2.size();
+        if(!t1.isEmpty()){
+            t1.root.setParent(node);
+            node.setLeft(t1.root);
+            t1.root = null;
+            t1.size = 0;
+        }
+        if(!t2.isEmpty()){
+            t2.root.setParent(node);
+            node.setRight(t2.root);
+            t2.root = null;
+            t2.size = 0;
+        }
+
     }
 
     /**
@@ -295,31 +311,103 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
      */
     public E remove(Position<E> p) throws IllegalArgumentException {
         // TODO
+        Node<E> node = validate(p);
+        if(numChildren(p) == 2){
+            throw new IllegalArgumentException("p have 2 children and be removed");
+        }
+        Node<E> child = (node.getLeft()!= null?node.getLeft():node.getRight());
+        if(child!=null){
+            child.setParent(node.getParent());
+        }
+        if(node == root){
+            root = child;
+        }else{
+            Node<E> parent = node.getParent();
+            if(node == parent.getLeft()){
+                parent.setLeft(child);
+            }else{
+                parent.setRight(child);
+            }
+        }
 
+        size --;
+        E temp = node.getElement();
+        node.setElement(null);
+        node.setRight(null);
+        node.setLeft(null);
+        node.setParent(node);
+
+        return temp;
+    }
+
+    public String toString () {
+        int count = 0;
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        inorderTraversal(root,sb,count);
+        sb.deleteCharAt(sb.length()-1);
+        sb.deleteCharAt(sb.length()-1);
+        sb.append("]");
+        return (sb.toString());
+
+
+    }
+
+    // Recursive inorder traversal method
+    private void inorderTraversal(Node<E> node, StringBuilder sb,int count) {
+        count++;
+        if (node == null) {
+            return;
+        }
+
+
+        inorderTraversal(node.getLeft(), sb,count); // Traverse left subtree
+        if(count == size-1){
+            sb.append(node.getElement()); // Visit node
+        }else{
+            sb.append(node.getElement()).append(", ");
+
+        }
+        inorderTraversal(node.getRight(), sb,count); // Traverse right subtree
+
+    }
+
+
+
+
+    public void createLevelOrder(ArrayList<E> list) {
+        root = createLevelOrderHelper(list, null, 0);
+    }
+
+    private Node<E> createLevelOrderHelper(ArrayList<E> list, Node<E> parent, int index) {
+        if (index < list.size()) {
+            Node<E> node = new Node<>(list.get(index), parent, null, null);
+            node.left = createLevelOrderHelper(list, node, 2 * index + 1);
+            node.right = createLevelOrderHelper(list, node, 2 * index + 2);
+            size++; // Increment size for each node added
+            return node;
+        }
         return null;
     }
 
-    public String toString() {
-        return positions().toString();
-    }
-
-    public void createLevelOrder(ArrayList<E> l) {
-        // TODO
-    }
-
-    private Node<E> createLevelOrderHelper(java.util.ArrayList<E> l, Node<E> p, int i) {
-        // TODO
-        return null;
-    }
 
     public void createLevelOrder(E[] arr) {
-        root = createLevelOrderHelper(arr, root, 0);
+        root = createLevelOrderHelper(arr, null, 0);
     }
 
-    private Node<E> createLevelOrderHelper(E[] arr, Node<E> p, int i) {
-        // TODO
+    private Node<E> createLevelOrderHelper(E[] arr, Node<E> parent, int i) {
+        // Base case: if index is out of bounds of the array
+        if (i < arr.length) {
+            Node<E> temp = new Node<>(arr[i], parent, null, null);
+            // Recursive case: construct left and right subtrees
+            temp.left = createLevelOrderHelper(arr, temp, 2 * i + 1); // Left child
+            temp.right = createLevelOrderHelper(arr, temp, 2 * i + 2); // Right child
+            size++;
+            return temp;
+        }
         return null;
     }
+
 
     public String toBinaryTreeString() {
         BinaryTreePrinter<E> btp = new BinaryTreePrinter<>(this);

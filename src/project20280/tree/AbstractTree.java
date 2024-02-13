@@ -28,7 +28,7 @@ public abstract class AbstractTree<E> implements Tree<E> {
     @Override
     public boolean isInternal(Position<E> p) {
         // TODO
-        return false;
+        return numChildren(p) > 0;
     }
 
     /**
@@ -41,7 +41,7 @@ public abstract class AbstractTree<E> implements Tree<E> {
     @Override
     public boolean isExternal(Position<E> p) {
         // TODO
-        return false;
+        return numChildren(p) == 0;
     }
 
     /**
@@ -53,7 +53,7 @@ public abstract class AbstractTree<E> implements Tree<E> {
     @Override
     public boolean isRoot(Position<E> p) {
         // TODO
-        return false;
+        return p == root();
     }
 
     /**
@@ -100,9 +100,13 @@ public abstract class AbstractTree<E> implements Tree<E> {
      * @throws IllegalArgumentException if p is not a valid Position for this tree.
      */
     public int depth(Position<E> p) throws IllegalArgumentException {
-        // TODO
-        return 0;
+        if (isRoot(p)) {
+            return 0;
+        } else {
+            return 1 + depth(parent(p));
+        }
     }
+
 
     /**
      * Returns the height of the tree.
@@ -125,7 +129,12 @@ public abstract class AbstractTree<E> implements Tree<E> {
      */
     public int height(Position<E> p) throws IllegalArgumentException {
         // TODO
-        return 0;
+        int h =0;
+
+        for(Position<E> c: children(p)){
+            h = Math.max(h, 1 + height(c));
+        }
+        return h;
     }
 
     //---------- support for various iterations of a tree ----------
