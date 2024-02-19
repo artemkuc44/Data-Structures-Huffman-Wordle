@@ -3,6 +3,8 @@ package project20280.exercises;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 
+
+
 public class leet {
     public static int removeDuplicates(int[] nums) {
         int[] expectedNums = new int[nums.length];
@@ -49,6 +51,18 @@ public class leet {
         System.out.println(Arrays.toString(nums1));
     }
 
+    public static String longestCommonPrefix(String[] strs) {
+        if (strs.length == 0) return "";
+        String prefix = strs[0];
+        for (int i = 1; i < strs.length; i++) {
+            while (strs[i].indexOf(prefix) != 0) {
+                prefix = prefix.substring(0, prefix.length() - 1);
+                if (prefix.isEmpty()) return "";
+            }
+        }
+        return prefix;
+    }
+
     public static void main(String[] args) {
         int[] nums = {1,1,2};
         System.out.println(removeDuplicates(nums));
@@ -59,5 +73,10 @@ public class leet {
 
 
         merge(nums1,3,nums2,3);
+
+        String[] strs = {"flower","flow","flight"};
+
+
+        System.out.println(longestCommonPrefix(strs));
     }
 }

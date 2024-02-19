@@ -86,13 +86,11 @@ public class DoublyLinkedList<E> implements List<E> {
     @Override
     public void add(int i, E e) {
         // TODO
-        if(head == null){
-            head = new Node<>(e,null,null);
-        }
+
         if(i == 0){
             addFirst(e);
         }
-        if(i == size-1){
+        if(i == size){
             addLast(e);
         }
         Node<E> current = head;

@@ -2,10 +2,11 @@ package project20280.stacksqueues;
 
 import project20280.interfaces.Stack;
 import project20280.list.DoublyLinkedList;
+import project20280.list.SinglyLinkedList;
 
 public class LinkedStack<E> implements Stack<E> {
 
-    DoublyLinkedList<E> ll = new DoublyLinkedList<>();//empty list
+    SinglyLinkedList<E> ll = new SinglyLinkedList<>();//empty list
 
     public static void main(String[] args) {
     }
@@ -35,14 +36,14 @@ public class LinkedStack<E> implements Stack<E> {
     @Override
     public E top() {
         // TODO
-        return ll.first();
+        return ll.get(0);
     }
 
     @Override
     public E pop() {
         // TODO
 
-        E ans = ll.first();
+        E ans = ll.get(0);
         ll.removeFirst();
         return ans;
     }

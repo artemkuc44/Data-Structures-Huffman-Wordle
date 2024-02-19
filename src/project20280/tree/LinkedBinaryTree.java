@@ -76,6 +76,8 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
         System.out.println("bt preorder: " + bt.size() + " " + bt.postorder());
 
         System.out.println(bt.toBinaryTreeString());
+
+
     }
 
     /**
@@ -396,6 +398,7 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
     }
 
     private Node<E> createLevelOrderHelper(E[] arr, Node<E> parent, int i) {
+
         // Base case: if index is out of bounds of the array
         if (i < arr.length) {
             Node<E> temp = new Node<>(arr[i], parent, null, null);
@@ -413,6 +416,8 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
         BinaryTreePrinter<E> btp = new BinaryTreePrinter<>(this);
         return btp.print();
     }
+
+
 
     /**
      * Nested static class for a binary tree node.
@@ -472,4 +477,60 @@ public class LinkedBinaryTree<E> extends AbstractBinaryTree<E> {
             return sb.toString();
         }
     }
+
+
+
+
+
+    // Method to print the binary tree
+    public void printBinaryTree(E[] arr) {
+        this.root = createLevelOrderHelper(arr, null, 0); // Populate the tree
+        int height = height(root);
+        printLevels(root, height);
+    }
+
+    // Helper method to print all levels of the tree
+    private void printLevels(Node<E> root, int height) {
+        for (int i = 1; i <= height; i++) {
+            printGivenLevel(root, i, height - i);
+            System.out.println(); // Move to the next line after printing each level
+        }
+    }
+
+    // Method to print nodes at a given level
+    private void printGivenLevel(Node<E> root, int level, int indentSpaces) {
+        if (root == null) {
+            printSpaces(indentSpaces);
+            System.out.print(" ");
+            printSpaces(indentSpaces);
+            return;
+        }
+        if (level == 1) {
+            printSpaces(indentSpaces);
+            System.out.print(root.getElement());
+            printSpaces(indentSpaces);
+        } else if (level > 1) {
+            int nextIndent = (indentSpaces - 1) / 2; // Compute the indent for the child nodes
+            printGivenLevel(root.getLeft(), level - 1, nextIndent);
+            printGivenLevel(root.getRight(), level - 1, nextIndent);
+        }
+    }
+
+    // Method to print spaces
+    private void printSpaces(int count) {
+        for (int i = 0; i < count; i++) {
+            System.out.print(" ");
+        }
+    }
+
+    // Method to calculate the height of the tree
+    private int height(Node<E> node) {
+        if (node == null) return 0;
+        else {
+            int lHeight = height(node.getLeft());
+            int rHeight = height(node.getRight());
+            return (lHeight > rHeight) ? (lHeight + 1) : (rHeight + 1);
+        }
+    }
+
 }
