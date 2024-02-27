@@ -1,26 +1,22 @@
 package project20280.exercises;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 
 
 
 public class leet {
-    public static int removeDuplicates(int[] nums) {
-        int[] expectedNums = new int[nums.length];
-        int lastNum = Integer.MIN_VALUE;
-        int count = 0;
+    public static int[] removeDuplicates(int[] nums) {
 
-        for(int i = 0;i<nums.length;i++){
-            if(nums[i] != lastNum){
-
-                expectedNums[i] = nums[i];
-                lastNum = nums[i];
+        int count = 1;
+        for(int i = 1;i<nums.length;i++){
+            if(nums[i-1] != nums[i]){
+                nums[count] = nums[i];
                 count++;
+
             }
         }
-        System.out.println(Arrays.toString(expectedNums));
-        return count;
+        return nums;
+
     }
 
     public static void merge(int[] nums1, int m, int[] nums2, int n) {
@@ -64,8 +60,8 @@ public class leet {
     }
 
     public static void main(String[] args) {
-        int[] nums = {1,1,2};
-        System.out.println(removeDuplicates(nums));
+        int[] nums = {0,0,1,1,1,2,2,3,3,4};
+        System.out.println(Arrays.toString(removeDuplicates(nums)));
 
         ////////////////
         int[] nums1 = {5,6,7,0,0,0};

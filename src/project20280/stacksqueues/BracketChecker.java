@@ -12,7 +12,6 @@ class BracketChecker {
 
     public void check() {
         //TODO
-        StringBuilder sb = new StringBuilder();
         Stack<Character> stack = new Stack<>();
 
         for(int i = 0;i<input.length();i++){

@@ -44,32 +44,42 @@ public class HeapPriorityQueue<K, V> extends AbstractPriorityQueue<K, V> {
      */
     public HeapPriorityQueue(K[] keys, V[] values) {
         // TODO
+        super();
+
+        if(keys.length != values.length){
+            throw new IllegalStateException("keys and values array must be same length");
+        }else{
+            for(int i = 0;i<keys.length;i++){
+                heap.add(i,new PQEntry<>(keys[i],values[i]));
+            }
+        }
+
     }
 
     // protected utilities
     protected int parent(int j) {
         // TODO
-        return 0;
+        return (j-1)/2;
     }
 
     protected int left(int j) {
         // TODO
-        return 0;
+        return 2 * j +1;
     }
 
     protected int right(int j) {
         // TODO
-        return 0;
+        return 2 * j +1;
     }
 
     protected boolean hasLeft(int j) {
         // TODO
-        return false;
+        return left(j) < heap.size();
     }
 
     protected boolean hasRight(int j) {
         // TODO
-        return false;
+        return right(j) < heap.size();
     }
 
     /**
