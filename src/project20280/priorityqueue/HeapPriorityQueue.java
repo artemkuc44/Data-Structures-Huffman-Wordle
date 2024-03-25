@@ -233,6 +233,23 @@ public class HeapPriorityQueue<K, V> extends AbstractPriorityQueue<K, V> {
         }
     }
 
+    public static <E> void pqSort(E[] array) {
+        // Create a priority queue (min-heap) to hold the elements of the array
+        HeapPriorityQueue<Integer, E> pq = new HeapPriorityQueue<>();
+
+        // Phase 1: Insert all array elements into the heap
+        for (E element : array) {
+            pq.insert((Integer) element, element);
+        }
+
+        // Phase 2: Extract elements from the heap and store them back into the array
+        for (int i = 0; i < array.length; i++) {
+            Entry<Integer, E> entry = pq.removeMin();
+            array[i] = entry.getValue();
+        }
+    }
+
+
     public static void main(String[] args) {
         Integer[] rands = new Integer[]{35, 26, 15, 24, 33, 4, 12, 1, 23, 21, 2, 5};
         HeapPriorityQueue<Integer, Integer> pq = new HeapPriorityQueue<>(rands, rands);
