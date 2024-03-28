@@ -31,6 +31,8 @@ public class ProbeHashMap<K, V> extends AbstractHashMap<K, V> {
 
     int findSlot(int h, K k) {
         // TODO
+        int n = table.length;
+
         return 0;
     }
 

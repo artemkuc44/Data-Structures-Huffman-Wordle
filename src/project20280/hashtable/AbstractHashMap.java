@@ -99,6 +99,7 @@ public abstract class AbstractHashMap<K, V> extends AbstractMap<K, V> {
     @Override
     public V put(K key, V value) {
         // TODO
+        bucketPut(hashValue(key),key,value);
         return null;
     }
 
