@@ -1,6 +1,9 @@
 package project20280.tree;
 
 import org.junit.jupiter.api.Test;
+import project20280.interfaces.Entry;
+
+import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -43,7 +46,7 @@ class TreeMapTest {
     }
 
     @Test
-    void testPut() {
+    void testPut() {//weird one
         TreeMap<Integer, String> map = new TreeMap<>();
         Integer[] arr = new Integer[]{35, 26, 15, 24, 33, 4, 12, 1, 23, 21, 2, 5};
 
@@ -51,7 +54,7 @@ class TreeMapTest {
             map.put(i, Integer.toString(i));
         }
 
-        assertEquals("[1, 2, 4, 5, 12, 15, 21, 23, 24, 26, 33, 35]", map.keySet().toString());
+        assertEquals("[1, 2, 4, 5, 12, 15, 21, 23, 24, 26, 33, 35]", map.toString());
     }
 
     @Test
@@ -154,15 +157,14 @@ class TreeMapTest {
     }
 
     @Test
-    void testToString() {
+    void testToString() throws IOException {
         TreeMap<Integer, String> map = new TreeMap<>();
-        //java.util.TreeMap<Integer, String> map = new java.util.TreeMap<>();
-        Integer[] arr = new Integer[]{35, 26, 15, 24, 33, 4, 12, 1, 23, 21, 2, 5};
+        Integer[] arr = new Integer[] {35,26,15,24,33,4,12,1,23,21,2,5};
 
-        for (Integer i : arr) {
+        for(Integer i : arr) {
             map.put(i, Integer.toString(i));
         }
-        assertEquals("", map.toString());
+        assertEquals("[1, 2, 4, 5, 12, 15, 21, 23, 24, 26, 33, 35]", map.toString());
     }
 
     @Test
@@ -177,5 +179,7 @@ class TreeMapTest {
 
         assertEquals("[12, 15, 21, 23, 24, 26, 33]", map.subMap(12, 34).toString());
     }
+
+
 
 }

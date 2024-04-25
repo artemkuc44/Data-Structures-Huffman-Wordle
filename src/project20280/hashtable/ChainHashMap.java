@@ -53,7 +53,11 @@ public class ChainHashMap<K, V> extends AbstractHashMap<K, V> {
     @Override
     protected V bucketGet(int h, K k) {
         // TODO
-        return null;
+        UnsortedTableMap<K,V> bucket = table[h];
+        if(bucket == null){
+            return null;
+        }
+        return  bucket.get(k);
     }
 
     /**
@@ -68,7 +72,14 @@ public class ChainHashMap<K, V> extends AbstractHashMap<K, V> {
     @Override
     protected V bucketPut(int h, K k, V v) {
         // TODO
-        return null;
+        UnsortedTableMap<K,V> bucket = table[h];
+        if(bucket == null) {
+            bucket = table[h] = new UnsortedTableMap<>();
+        }
+        int oldSize = bucket.size();
+        V ans = bucket.put(k,v);
+        n+= (bucket.size() - oldSize);
+        return ans;
     }
 
 
@@ -83,7 +94,12 @@ public class ChainHashMap<K, V> extends AbstractHashMap<K, V> {
     @Override
     protected V bucketRemove(int h, K k) {
         // TODO
-        return null;
+        UnsortedTableMap<K,V> bucket = table[h];
+        if(bucket == null) return null;
+        int oldSize = bucket.size();
+        V ans = bucket.remove(k);
+        n -= oldSize - bucket.size();
+        return ans;
     }
 
     /**
@@ -108,6 +124,32 @@ public class ChainHashMap<K, V> extends AbstractHashMap<K, V> {
         }
         return entries;
     }
+    public V getOrDefault(K key, V defaultValue) {//needed for huffman
+        int h = hashValue(key); //compute the hash value for the key to find the correct bucket
+        UnsortedTableMap<K, V> bucket = table[h];
+        if (bucket == null) {
+            return defaultValue; //return the default value if the bucket is empty
+        }
+        V value = bucket.get(key);
+        return (value != null) ? value : defaultValue; //return the found value or the default value if null
+    }
+
+    public void printHashMap() {
+        System.out.println("ChainHashMap contents:");
+        for (int i = 0; i < table.length; i++) {
+            UnsortedTableMap<K, V> bucket = table[i];
+            // Check if the bucket is not empty
+            if (bucket != null && !bucket.isEmpty()) {
+                System.out.print("Bucket " + i + ": ");
+                for (Entry<K, V> entry : bucket.entrySet()) {
+                    System.out.print("(" + entry.getKey() + ", " + entry.getValue() + ") ");
+                }
+                System.out.print("\n"); // Move to the next line after printing all entries in a bucket
+            }
+        }
+    }
+
+
 
     public String toString() {
         return entrySet().toString();

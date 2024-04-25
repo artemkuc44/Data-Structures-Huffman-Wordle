@@ -107,4 +107,24 @@ class DoublyLinkedListTest {
         assertEquals("[0, 1, 2, 3, 4]", buf.toString());
     }
 
+    @Test
+    void testMerge() {
+        DoublyLinkedList<Integer> list1 = new DoublyLinkedList<>();
+        list1.addLast(1);
+        list1.addLast(2);
+        list1.addLast(3);
+
+        DoublyLinkedList<Integer> list2 = new DoublyLinkedList<>();
+        list2.addLast(4);
+        list2.addLast(5);
+        list2.addLast(6);
+
+        list1.merge(list2);
+
+        assertEquals("[1, 2, 3, 4, 5, 6]", list1.toString());
+        assertTrue(list2.isEmpty());
+        assertEquals(6, list1.size());
+    }
+
+
 }

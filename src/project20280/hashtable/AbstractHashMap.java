@@ -1,7 +1,9 @@
 package project20280.hashtable;
 
 import project20280.interfaces.AbstractMap;
+import project20280.interfaces.Entry;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -99,18 +101,17 @@ public abstract class AbstractHashMap<K, V> extends AbstractMap<K, V> {
     @Override
     public V put(K key, V value) {
         // TODO
-        bucketPut(hashValue(key),key,value);
-        return null;
+        return bucketPut(hashValue(key),key,value);
     }
 
     // private utilities
 
     /**
-     * Hash function applying MAD method to default hash code.
+     * Hash function applying MAD method to default hash cod e.
      */
-    private int hashValue(K key) {
+    protected int hashValue(K key) {
         // TODO
-        return 0;
+        return (int) ((Math.abs(key.hashCode( ) * scale + shift) % prime) % capacity);
     }
 
     /**
@@ -118,6 +119,17 @@ public abstract class AbstractHashMap<K, V> extends AbstractMap<K, V> {
      */
     private void resize(int newCap) {
         // TODO
+        ArrayList<Entry<K,V>> buffer = new ArrayList<>(n);
+        for(Entry<K,V> entry:entrySet()){
+            buffer.add(entry);
+        }
+        capacity = newCap;
+        createTable();
+        n = 0;
+        for(Entry<K,V> entry:buffer){
+            put(entry.getKey(),entry.getValue());
+        }
+
     }
 
     // protected abstract methods to be implemented by subclasses

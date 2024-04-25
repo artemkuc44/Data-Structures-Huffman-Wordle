@@ -230,7 +230,7 @@ public class DoublyLinkedList<E> implements List<E> {
     }
 
     public void addLast(E e) {
-        addBetween(e, tail.getPrev( ), tail);
+        addBetween(e, tail.getPrev(), tail);
     }
 
 
@@ -273,4 +273,30 @@ public class DoublyLinkedList<E> implements List<E> {
             System.out.println("value: " + e);
         }
     }
+
+    public void merge(DoublyLinkedList<E> otherList) {
+        if (otherList.isEmpty()) {
+            return;
+        }
+
+        // Get references to the tails of both lists
+        Node<E> thisTail = this.tail.getPrev();
+        Node<E> otherTail = otherList.tail.getPrev();
+
+        // Connect the tail of this list to the head of the other list
+        thisTail.setNext(otherList.head.getNext());
+        otherList.head.getNext().setPrev(thisTail);
+
+        // Update the tail of this list to the tail of the other list
+        this.tail = otherList.tail;
+
+        // Update the size of this list
+        this.size += otherList.size;
+
+        // Clear the other list
+        otherList.head.setNext(otherList.tail);
+        otherList.tail.setPrev(otherList.head);
+        otherList.size = 0;
+    }
+
 }

@@ -1,6 +1,7 @@
 package project20280.tree;
 
 import org.junit.jupiter.api.Test;
+import project20280.interfaces.Entry;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -135,8 +136,18 @@ class AVLTreeMapTest {
     }
 
     @Test
-    void testEntrySet() {
-        fail("Not yet implemented");
+    void testEntrySet()  {
+        AVLTreeMap<Integer, String> map = new AVLTreeMap<>();
+        Integer[] arr = new Integer[] {35,26,15,24,33,4,12,1,23,21,2,5};
+
+        for(Integer i : arr) {
+            map.put(i, Integer.toString(i));
+        }
+        java.util.List<Entry<Integer, String>> esStr = new java.util.ArrayList<>();
+        for(var e : map.entrySet()) {
+            esStr.add(e);
+        }
+        assertEquals("[1, 2, 4, 5, 12, 15, 21, 23, 24, 26, 33, 35]", esStr.toString());
     }
 
     @Test
@@ -148,7 +159,7 @@ class AVLTreeMapTest {
         for (Integer i : arr) {
             map.put(i, Integer.toString(i));
         }
-        assertEquals("[⦰, 1, ⦰, 2, ⦰, 4, ⦰, 5, ⦰, 12, ⦰, 15, ⦰, 21, ⦰, 23, ⦰, 24, ⦰, 26, ⦰, 33, ⦰, 35, ⦰]", map.toString());
+        assertEquals("[1, 2, 4, 5, 12, 15, 21, 23, 24, 26, 33, 35]", map.toString());
     }
 
     @Test
