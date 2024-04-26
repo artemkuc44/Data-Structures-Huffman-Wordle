@@ -267,7 +267,7 @@ public class TreeMap<K, V> extends AbstractSortedMap<K, V> {
      * @param p   a position of the tree serving as root of a subtree
      * @return Position holding key, or last node reached during search
      */
-    private Position<Entry<K, V>> treeSearch(Position<Entry<K, V>> p, K key) {
+    Position<Entry<K, V>> treeSearch(Position<Entry<K, V>> p, K key) {
         // TODO
         if (isExternal(p))
             return p;
@@ -323,7 +323,7 @@ public class TreeMap<K, V> extends AbstractSortedMap<K, V> {
     public V get(K key) throws IllegalArgumentException {
         // TODO
         Position<Entry<K, V>> p = treeSearch(root(), key);
-        rebalanceAccess(p); // hook for splay tree operations
+        rebalanceAccess(p);
         if (isExternal(p)) return null;
         return p.getElement().getValue();
     }

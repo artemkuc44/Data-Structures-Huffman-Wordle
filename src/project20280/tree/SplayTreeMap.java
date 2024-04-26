@@ -27,8 +27,23 @@ public class SplayTreeMap<K, V> extends TreeMap<K, V> {
      * Utility used to rebalance after a map operation.
      */
     private void splay(Position<Entry<K, V>> p) {
-        // TODO
+        //TODO
+        while (!isRoot(p)) {
+            Position<Entry<K, V>> parent = parent(p);
+            Position<Entry<K, V>> grand = parent(parent);
+            if (grand == null) { //zig
+                rotate(p);
+            } else if ((left(parent) == p && left(grand) == parent) ||
+                    (right(parent) == p && right(grand) == parent)) { //zig zig
+                rotate(parent); //move parent up
+                rotate(p); //move p up
+            } else { //zig zag
+                rotate(p); //move p up
+                rotate(p); //move p up again
+            }
+        }
     }
+
 
     /**
      * Overrides the TreeMap rebalancing hook that is called after a node access.
@@ -38,6 +53,8 @@ public class SplayTreeMap<K, V> extends TreeMap<K, V> {
     //@Override
     protected void rebalanceAccess(Position<Entry<K, V>> p) {
         // TODO
+        if (p != null) splay(p);
+
     }
 
     /**
@@ -48,7 +65,7 @@ public class SplayTreeMap<K, V> extends TreeMap<K, V> {
     //@Override
     protected void rebalanceInsert(Position<Entry<K, V>> p) {
         // TODO
-        splay(p);
+        if (p != null) splay(p);
     }
 
     /**
@@ -59,7 +76,23 @@ public class SplayTreeMap<K, V> extends TreeMap<K, V> {
     //@Override
     protected void rebalanceDelete(Position<Entry<K, V>> p) {
         // TODO
+        if (p != null) splay(parent(p));
+
     }
+
+    @Override
+    public V get(K key) {//had to add for test
+        Position<Entry<K, V>> p = treeSearch(root(), key);
+        if (isInternal(p)) {
+            splay(p);
+            return p.getElement().getValue();
+        } else {
+            if (p != null) splay(parent(p));
+            return null;
+        }
+    }
+
+
 
     public static void main(String[] args) {
         SplayTreeMap<Integer, Integer> treeMap = new SplayTreeMap<Integer, Integer>();

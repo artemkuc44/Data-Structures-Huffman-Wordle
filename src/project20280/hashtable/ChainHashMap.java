@@ -2,7 +2,12 @@ package project20280.hashtable;
 
 import project20280.interfaces.Entry;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.PriorityQueue;
+import java.util.Scanner;
 
 /*
  * Map implementation using hash table with separate chaining.
@@ -124,7 +129,7 @@ public class ChainHashMap<K, V> extends AbstractHashMap<K, V> {
         }
         return entries;
     }
-    public V getOrDefault(K key, V defaultValue) {//needed for huffman
+    public V getOrDefault(K key, V defaultValue) {//needed for huffman + example
         int h = hashValue(key); //compute the hash value for the key to find the correct bucket
         UnsortedTableMap<K, V> bucket = table[h];
         if (bucket == null) {
@@ -132,6 +137,10 @@ public class ChainHashMap<K, V> extends AbstractHashMap<K, V> {
         }
         V value = bucket.get(key);
         return (value != null) ? value : defaultValue; //return the found value or the default value if null
+    }
+
+    public double getLoadFactor() {
+        return (double) super.size() / capacity;
     }
 
     public void printHashMap() {
@@ -155,16 +164,59 @@ public class ChainHashMap<K, V> extends AbstractHashMap<K, V> {
         return entrySet().toString();
     }
 
-    public static void main(String[] args) {
-        ChainHashMap<Integer, String> m = new ChainHashMap<Integer, String>();
-        m.put(1, "One");
-        m.put(10, "Ten");
-        m.put(11, "Eleven");
-        m.put(20, "Twenty");
+    public static project20280.hashtable.ChainHashMap<String, Integer> countWordFrequency(String filePath) throws FileNotFoundException {
+        project20280.hashtable.ChainHashMap<String, Integer> counter = new project20280.hashtable.ChainHashMap<>();
 
-        System.out.println("m: " + m);
+        File file = new File(filePath);
+        Scanner scanner = new Scanner(file);
+        while (scanner.hasNext()) {
+            String word = scanner.next().toLowerCase();
 
-        m.remove(11);
-        System.out.println("m: " + m);
+            counter.put(word, counter.getOrDefault(word, 0) + 1);
+        }
+
+        return counter;
     }
+
+    public static void printTopFrequentWords(project20280.hashtable.ChainHashMap<String, Integer> counter, int topN) {
+        Comparator<Entry<String, Integer>> entryComparator = Comparator.comparing(Entry::getValue);//custom
+
+        PriorityQueue<Entry<String, Integer>> pq = new PriorityQueue<>(entryComparator.reversed());//min ->max.heap
+
+        for (Entry<String, Integer> entry : counter.entrySet()) {
+            pq.offer(entry);
+        }
+
+        System.out.println("Top " + topN + " most frequently used words:");
+        int count = 0;
+        while (count < topN && !pq.isEmpty()) {
+            Entry<String, Integer> entry = pq.poll();
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+            count++;
+        }
+    }
+
+    public int countCollisions() {
+        int collisionCount = 0;
+        // Iterate through each bucket
+        for (UnsortedTableMap<K, V> bucket : table) {
+            if (bucket != null && bucket.size() > 1) {  //check if the bucket exists and has more than one entry
+                collisionCount += (bucket.size() - 1);  //add the number of collisions in this bucket
+            }
+        }
+        return collisionCount;
+    }
+
+
+    public static void main(String[] args) {
+        try {
+            String filePath = "src/wordle/resources/sample.txt";
+            System.out.println(filePath);
+            project20280.hashtable.ChainHashMap<String, Integer> counter = countWordFrequency(filePath);
+            printTopFrequentWords(counter, 10);
+        } catch (FileNotFoundException e) {
+            System.err.println("File not found: " + e.getMessage());
+        }
+    }
+
 }

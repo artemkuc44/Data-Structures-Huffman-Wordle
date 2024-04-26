@@ -22,7 +22,15 @@ public class Wordle {
     public static final String EXACT= "🟩";
 
     String fileName = "wordle/resources/dictionary.txt";
+    //for normal dictionary:
+    //Average number of guesses over 1000 games: 3.819
+    //Percentage of games won within 6 guesses: 99.0%
+
     //String fileName = "wordle/resources/extended-dictionary.txt";
+    //for extended dictionary:
+    //Average number of guesses over 1000 games: 4.616
+    //Percentage of games won within 6 guesses: 90.6%
+
     //String fileName = "wordle/resources/testDict.txt";
     List<String> dictionary = null;
     final int num_guesses = 20;
@@ -45,60 +53,54 @@ public class Wordle {
 
         this.dictionary = readDictionary(fileName);
 
-        System.out.println("dict length: " + this.dictionary.size());
+        //System.out.println("dict length: " + this.dictionary.size());
         //System.out.println("dict: " + dictionary);
 
     }
 
     public static void main(String[] args) {
 
-        int count = 0;
-        int totalGuesses = 0;
-
-        //String target = game.getRandomTargetWord();
-
-        //System.out.println("target: " + target);
-//
-//        Wordle game = new Wordle();
-//        game.play("abbey");
-//        game.play("close");
-
-
-//        float times_ran = 1000;
-//        for(int i = 0;i<times_ran;i++){
-//            Wordle game = new Wordle();
-//
-//            String thisTarget = game.getRandomTargetWord();
-//            game.target = thisTarget;
-//            //String thisTarget = "sunna";
-//            System.out.println("///////////////////////////////////////////Game num: " + (++count) + "\n");
-//            game.play(thisTarget);
-//
-//            totalGuesses += game.num_guesses_made;
-//
-//        }
-//        float average_guesses = totalGuesses/times_ran;
-//
-//        System.out.println("AVERAGE: " + average_guesses);
-
         Wordle game = new Wordle();
+
+        //game.simulateGames(1);
+
         game.play("abbey");
 
+    }
 
+    public void simulateGames(int numberOfGames) {
+        int totalGuesses = 0;
+        int gamesWonWithinSixGuesses = 0;
+
+        for (int i = 0; i < numberOfGames; i++) {
+            Wordle gameInstance = new Wordle(); //new instance for each game
+            String targetWord = gameInstance.getRandomTargetWord(); //randomly select a target word for the game
+            gameInstance.play(targetWord);
+            totalGuesses += gameInstance.num_guesses_made;
+
+            if (gameInstance.num_guesses_made <= 6) {
+                gamesWonWithinSixGuesses++;
+            }
+        }
+        float averageGuesses = (float) totalGuesses / numberOfGames; //average number of guesses
+        float percentageOfGamesWithinSixGuesses = (float) gamesWonWithinSixGuesses / numberOfGames * 100; //percentage of games won within 6 guesses
+
+        System.out.println("Average number of guesses over " + numberOfGames + " games: " + averageGuesses);
+        System.out.println("Percentage of games won within 6 guesses: " + percentageOfGamesWithinSixGuesses + "%");
     }
 
     public void play(String target) {
         // TODO
         // TODO: You have to fill in the code
 
-        List<String> solverDictionary = dictionary;
+        List<String> filtered_dict = dictionary;
         for(int i = 1; i <= num_guesses; ++i) {
 
             System.out.println("guess number: " + i);
-            String guess = getTestGuess(solverDictionary);
+            String guess = getMostLikelyGuess(filtered_dict);
 
             if(i==1){
-                guess = "slate";
+                guess = "keeps";
             }
 
             System.out.println(guess);
@@ -113,15 +115,14 @@ public class Wordle {
             // the hint is a string where green="+", yellow="o", grey="_"
             // didn't win ;(
 
-
             // after setting the yellow and green positions, the remaining hint positions must be "not present" or "_"
             System.out.println("hint: " + Arrays.toString(getHint(target,guess)));
 
-            solverDictionary = filterDictionaryBasedOnHint(solverDictionary,guess,getHint(target,guess));
+            filtered_dict = filterDictionaryBasedOnHint(filtered_dict,guess,getHint(target,guess));
 
-            //System.out.println("possible words: \n" + createWordFrequencyScoreMap(solverDictionary).toString());
-            System.out.println(solverDictionary.size() + "\n" +solverDictionary + "\n");
-            System.out.println("\n" + solverDictionary.size() + "\n");
+            //System.out.println("possible words: \n" + createpossible_words(filtered_dict).toString());
+            System.out.println(filtered_dict.size() + "\n" +filtered_dict + "\n");
+            System.out.println("\n" + filtered_dict.size() + "\n");
         }
 
         lost(target);
@@ -139,7 +140,6 @@ public class Wordle {
                 matched[k] = true;
             }
         }
-
         // set the arrays for yellow (present but not in right place), grey (not present)
         // loop over each entry:
         //  if hint == "+" (green) skip it
@@ -177,14 +177,14 @@ public class Wordle {
         System.out.println();
     }
 
-    public String getGuess() {
-        Scanner myScanner = new Scanner(System.in, StandardCharsets.UTF_8.displayName());  // Create a Scanner object
+    public String getGuess() {//scans in guess
+        Scanner myScanner = new Scanner(System.in, StandardCharsets.UTF_8.displayName());  
         System.out.println("Guess:");
 
-        String userWord = myScanner.nextLine();  // Read user input
-        userWord = userWord.toLowerCase(); // covert to lowercase
+        String userWord = myScanner.nextLine();  //read user input
+        userWord = userWord.toLowerCase(); //covert to lowercase
 
-        // check the length of the word and if it exists
+        //check the length of the word and if it in dict
         while ((userWord.length() != 5) || !(dictionary.contains(userWord))) {
             if ((userWord.length() != 5)) {
                 System.out.println("The word " + userWord + " does not have 5 letters.");
@@ -198,13 +198,13 @@ public class Wordle {
         return userWord;
     }
 
-    public String getTestGuess(List<String> dictionary){
+    public String getMostLikelyGuess(List<String> dictionary){
         //Scanner myScanner = new Scanner(System.in, StandardCharsets.UTF_8.displayName());  // Create a Scanner object
         System.out.println("Guess: ");
 
         //String userWord = myScanner.nextLine();  // Read user input
         String userWord = getMostLikelyWord(dictionary);
-        userWord = userWord.toLowerCase(); // covert to lowercase
+        userWord = userWord.toLowerCase();
 
         // check the length of the word and if it exists
         while ((userWord.length() != 5) || !(dictionary.contains(userWord))) {
@@ -323,7 +323,7 @@ public class Wordle {
         int freq = 0;
         String highestFreqWord = "";
         // First calculate the frequency of each letter in the entire dictionary
-        HashMap<Character, Integer> letterFrequencyMap = new HashMap<>();
+        project20280.hashtable.ChainHashMap<Character, Integer> letterFrequencyMap = new project20280.hashtable.ChainHashMap<>();
         for (String word : dictionary) {
             for (char c : word.toCharArray()) {
                 letterFrequencyMap.put(c, letterFrequencyMap.getOrDefault(c, 0) + 1);
@@ -331,18 +331,20 @@ public class Wordle {
         }
 
         // Now calculate the score for each word based on the letter frequencies
-        project20280.hashtable.ChainHashMap<String, Integer> wordFrequencyScoreMap = new project20280.hashtable.ChainHashMap<>();
+        project20280.hashtable.ChainHashMap<String, Integer> possible_words = new project20280.hashtable.ChainHashMap<>();
         for (String word : dictionary) {
             int score = 0;
             for (char c : word.toCharArray()) {
                 score += letterFrequencyMap.get(c);
             }
-            wordFrequencyScoreMap.put(word, score);
+            possible_words.put(word, score);
             if(score>freq){
                 freq = score;
                 highestFreqWord = word;
             }
         }
+        System.out.println("Load factor: " + possible_words.getLoadFactor());
+        System.out.println("Collisions: " + possible_words.countCollisions());
 
         return highestFreqWord;
     }
